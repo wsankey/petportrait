@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<center>
+<section id="myCarousel" class="carousel slide"
+	data-ride="carousel" stlye="max-width: 960px;">
+	<!-- Indicators -->
+	<ol class="carousel-indicators">
+		<li data-target="#myCarousel" data-slide-to="0"
+			class="active"></li>
+		<li data-target="#myCarousel" data-slide-to="1"></li>
+		<li data-target="#myCarousel" data-slide-to="2"></li>
+	</ol>
+	<div class="carousel-inner">
+		<figure class="item active">
+			<img src="{% static 'img/rue1.jpg' %}" alt="Join the Pet Portrait Club!" style="max-height: 540px;">
+			<figtcaption class="carousel-caption">
+			<h1>Join Pet Portrait Club!</h1>
+			<p>Alternative text</p>
+			<p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+		</figtcaption>
+		</figure>
+		<figure class="item">
+			<img src="{% static 'img/rue2.jpg' %}" alt="Join the Pet Portrait Club!" style="max-height: 540px;">
+			<figtcaption class="carousel-caption">
+			<h1>Share pictures of your closest friend. Commission a portrait!</h1>
+			<p>Alternative text</p>
+			<p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+		</figtcaption>
+		</figure>		
+		<figure class="item">
+			<img src="{% static 'img/rue3.jpg' %}" alt="Join the Pet Portrait Club!" style="max-height: 540px;">
+			<figtcaption class="carousel-caption">
+			<h1>Share pictures of your closest friend. Commission a portrait!</h1>
+			<p>Alternative text</p>
+			<p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+		</figtcaption>
+		</figure>
+	</div>
+	<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+	<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+	</section>
+</center>
+{% endblock %}
