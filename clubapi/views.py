@@ -1,5 +1,13 @@
 from django.contrib.auth.models import User, Group
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.views.generic import FormView, RedirectView, TemplateView
+from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import (
+	login as auth_login, logout as auth_logout, authenticate)
+
+
 from models import Owner, Artist, Pet, Portrait
 from rest_framework import viewsets
 from serializers import *
@@ -40,3 +48,4 @@ class PortraitViewSet(viewsets.ModelViewSet):
 
 	queryset = Portrait.objects.all()
 	serializer_class = PortraitSerializer
+
