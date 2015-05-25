@@ -1,42 +1,41 @@
-from django.contrib.auth.models import User, Group
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
-from django.views.generic import FormView, RedirectView, TemplateView
-from django.core.urlresolvers import reverse_lazy
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import (
-	login as auth_login, logout as auth_logout, authenticate)
-from django.core.context_processors import csrf
-
 from models import Owner, Artist, Pet, Portrait
-from rest_framework import viewsets
-from serializers import *
+from serializers import OwnerSerializer, ArtistSerializer, PetSerializer, PortraitSerializer
+from django.shortcuts import render
 
+from rest_framework import viewsets
+from rest_framework import permissions
 # Create your views here.
 def index(request):
 	title = "Pet Portrait"
-	uid = request.session.get('user')
+	uid = request.session.get('owner')
 
 	if uid is None:
 		#main landing page
 		return render(request, 'clubapi/index.html')
 
-
-class UserViewSet(viewsets.ModelViewSet):
-
-	queryset = User.objects.all()
-	serializer_class = UserSerializer
-
-class GroupViewSet(viewsets.ModelViewSet):
-
-	queryset = Group.objects.all()
-	serializer_class = GroupSerializer
-
 class OwnerViewSet(viewsets.ModelViewSet):
-
+	lookup_field = 'username'
 	queryset = Owner.objects.all()
 	serializer_class = OwnerSerializer
+
+	def get_permissions(self):
+		if self.request.method in permissions.SAFE_METHODS:
+			return (permissions.AllowAny(),)
+
+		return (permissions.IsAuthenticated(), IsAccountOwner(),)
+
+	def create(self, request):
+		serializer = self.serializer_class(data=request.data)
+
+		if serializer.is_valid():
+			Owner.objects.create_user(**serializer.validated_data)
+
+			return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+		
+		return Response({
+			'status': 'Bad request',
+			'message': 'Account could not be created with current data.'
+			}, status=status.HTTP_400_BAD_REQUEST)
 
 class ArtistViewSet(viewsets.ModelViewSet):
 
