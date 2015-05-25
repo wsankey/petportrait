@@ -2,20 +2,35 @@ from django.contrib.auth.models import User, Group
 from models import Owner, Artist, Pet, Portrait
 from rest_framework import serializers
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-	class Meta:
-		model = User
-		fields = ('url', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'groups')
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-	class Meta:
-		model = Group
-		fields = ('url', 'name')
 
 class OwnerSerializer(serializers.HyperlinkedModelSerializer):
+	password = serializers.CharField(write_only=True, required=False)
+	confirm_password = serializers.CharField(write_only=True, required=False)
+
 	class Meta:
 		model = Owner
-		fields = ('url', 'first_name', 'username')
+		fields = ('id', 'email', 'username', 'created_at', 'updated_at', 
+					'first_name', 'last_name', 'password', 'confirm_password')
+
+		read_only_fields = ('created_at', 'updated_at')
+
+		def create(self, validated_data):
+			return Owner.objects.create(**validated_data)
+
+		def update(self, instance, validated_data):
+			instance.username = validated_data.get('username', instance.username)
+
+			instance.save()
+
+			password = validated_data.get('password', None)
+
+			if password and confirm_password and password == confirm_password:
+				instance.set_password(password)
+				instance.save()
+
+			update_session_auth_hash(self.context.get('request'), instance)
+
+			return instance
 
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:

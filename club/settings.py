@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.forms',
+    'crispy_forms',
     'rest_framework',
     'clubapi',
 )
@@ -98,11 +99,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'clubapi.Owner'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # REST_FRAMEWORK = {
  #    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),

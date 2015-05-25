@@ -1,11 +1,35 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractBaseUser, BaseUserManager
 from django.db import models
 
+class OwnerManager(BaseUserManager):
+    def create_user(self, email, password=None, **kwargs):
+        if not email:
+            raise ValueError('Users must have a valid email address.')
 
-class Owner(models.Model):
+        if not kwargs.get('username'):
+            raise ValueError('Users must have a valid username.')
 
+        owner = self.model(
+            email=self.normalize_email(email), username=kwargs.get('username')
+        )
+
+        owner.set_password(password)
+        owner.save()
+
+        return owner
+
+    def create_superuser(self, email, password, **kwargs):
+        owner = self.create_user(email, password, **kwargs)
+
+        owner.is_admin = True
+        owner.save()
+
+        return owner
+
+class Owner(AbstractBaseUser):
 	email = models.EmailField(unique=True)
 	username = models.CharField(max_length=40, unique=True)
+
 	first_name = models.CharField(max_length=40, blank=True)
 	last_name = models.CharField(max_length=40, blank=True)
 
@@ -16,6 +40,7 @@ class Owner(models.Model):
 
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['username']
+
 
 class Artist(models.Model):
 
