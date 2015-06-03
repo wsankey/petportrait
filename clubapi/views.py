@@ -1,6 +1,7 @@
 from models import Owner, Artist, Pet, Portrait
 from serializers import OwnerSerializer, ArtistSerializer, PetSerializer, PortraitSerializer
 from django.shortcuts import render
+from permissions import *
 
 from rest_framework import viewsets
 from rest_framework import permissions
