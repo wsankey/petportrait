@@ -35,12 +35,12 @@ class OwnerSerializer(serializers.HyperlinkedModelSerializer):
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Artist
-		fields = ('url', 'first_name', 'username')
+		fields = ('email', 'username', 'first_name', 'last_name', 'is_admin', 'created_at', 'updated_ad')
 
 class PetSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Pet
-		fields = ('url', 'name', 'description', 'owner', 'has_portrait')
+		fields = ('name', 'description', 'owner', 'has_portrait')
 
 class PortraitSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
